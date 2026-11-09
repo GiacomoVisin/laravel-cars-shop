@@ -8,11 +8,11 @@ class Car extends Model
 {
     public function Type()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Type::class);
     }
 
 
-    public function Brand()
+    public function Brands()
     {
         return $this->belongsToMany(Brand::class);
     }
