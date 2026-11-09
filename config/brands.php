@@ -1,5 +1,7 @@
 <?php
 
+return 
+
 $brands = [
 
     ['name' => 'Fiat', 'description' => 'Storico marchio italiano di Torino, noto per le city car come Panda e 500.'],
