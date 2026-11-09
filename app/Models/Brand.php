@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-   public function Cars(){
-    return $this->belongsToMany(Car::class);
+   public function cars(){
+    return $this->hasMany(Car::class);
    }
 }
