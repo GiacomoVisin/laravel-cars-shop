@@ -4,7 +4,7 @@
     <img src="{{ asset($car['img']) }}" 
          alt="{{ $car['name'] }}" 
          class="card-img-top" 
-         style="width: 100%; height: 200px; object-fit: cover;">
+         style="width: 100%; height: 300px; object-fit: cover;">
     
     <div class="card-body">
         <h5 class="card-title">{{ $car['name'] }}</h5>
