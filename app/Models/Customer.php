@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    //
+    public function Cars()
+    {
+        return $this->belongsToMany(Car::class);
+    }
 }
+
