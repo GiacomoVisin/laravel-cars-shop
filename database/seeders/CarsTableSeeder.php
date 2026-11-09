@@ -14,7 +14,7 @@ class CarsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $cars = config('array');
+        $cars = config('cars');
 
         foreach ($cars as $car) {
 
