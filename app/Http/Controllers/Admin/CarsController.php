@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Car;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,10 @@ class CarsController extends Controller
      */
     public function index()
     {
+        $brands = Brand::all();
         $cars = Car::all();
-
-        return view('cars.index',compact('cars'));
+            
+        return view('cars.index',compact('cars','brands'));
     }
 
     /**
