@@ -7,10 +7,20 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
-
-h1{
-    text-align:center;
-    background-color:rgb(211, 195, 195);
+body{
+     background: linear-gradient(to left, rgb(73, 71, 71), rgb(167, 167, 175), rgb(43, 43, 51));
+}
+h1 {
+    text-align: center;
+    background-color: rgb(211, 195, 195);
     padding: 1rem;
     font-family: "Momo Trust Display";
+}
+
+.card-body {
+    background: linear-gradient(to left, rgb(73, 71, 71), rgb(167, 167, 175), rgb(43, 43, 51));
+
+    h5,p {
+        color: white;
+    }
 }
