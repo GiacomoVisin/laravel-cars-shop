@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::table('cars', function (Blueprint $table) {
            
-            $table->foreignId('brand_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('brand_id')->after('id')->nullable()->constrained()->nullOnDelete();
         });
     }
 
