@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <h1 class="text-center mb-4" style="background-color: #4a4e51; color: white;">Aggiungi Nuova Auto</h1>
+   <h1 class="text-center text-white mb-4" style="background: linear-gradient(135deg, #2b2d2f, #1a1c1e); border-top: 1px solid #4a4e51;">AGGIUNGI NUOVA AUTO</h1>
 
     <div class="container my-5">
 

@@ -22,7 +22,7 @@
     </style>
 
 
-    <h1 class="text-center mb-4" style="background-color: #4a4e51; color: white;">BOOLEAN MOTORS G.B.M.</h1>
+    <h1 class="text-center text-white mb-4" style="background: linear-gradient(135deg, #2b2d2f, #1a1c1e); border-top: 1px solid #4a4e51;">BOOLEAN MOTORS G.B.M.</h1>
 
     <div class="container my-4">
 

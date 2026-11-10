@@ -15,10 +15,7 @@
 <body>
     @yield('content')
 
-    @section('subcontent')
-
-    @endsection
-
+    @extends('partials.footer')
 
 </body>
 
