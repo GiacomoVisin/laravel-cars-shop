@@ -167,16 +167,22 @@ class CarsController extends Controller
     public function destroy(Car $car)
     {
         // Se l'immagine è salvata nello storage (e non è un'immagine di base in public/images/), la eliminiamo fisicamente
-        if ($car->img && !Str::startsWith($car->img, ['http://', 'https://', 'images/'])) {
-            if (Storage::disk('public')->exists($car->img)) {
-                Storage::disk('public')->delete($car->img);
-            }
-        }
+        /*   if ($car->img && !Str::startsWith($car->img, ['http://', 'https://', 'images/'])) {
+              if (Storage::disk('public')->exists($car->img)) {
+                  Storage::disk('public')->delete($car->img);
+              }
+          }
 
-        // Elimina il record dal database
+          // Elimina il record dal database
+          $car->delete();
+
+          // Reindirizza alla lista con un messaggio di successo
+          return redirect()->route('cars.index')->with('success', 'Auto eliminata con successo!'); */
+
         $car->delete();
 
-        // Reindirizza alla lista con un messaggio di successo
-        return redirect()->route('cars.index')->with('success', 'Auto eliminata con successo!');
+        return response()->json([
+            'message' => 'Auto eliminata con successo'
+        ], 200);
     }
 }

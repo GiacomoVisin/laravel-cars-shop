@@ -22,3 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/cars', [CarsController::class, 'store']);
+
+Route::middleware('auth:sanctum')->group(function () {
+   
+    Route::delete('/cars/{car}', [CarsController::class, 'destroy']);
+});
