@@ -20,7 +20,7 @@ class CarsController extends Controller
         $types = Type::all();
         $brands = Brand::all();
         $cars = Car::all();
-    
+
         return view('cars.index', compact('cars', 'brands', 'types'));
     }
 
@@ -56,11 +56,11 @@ class CarsController extends Controller
         // Gestione dell'immagine con Storage::putFile
         if ($request->hasFile('image')) {
             // Specifica il disco 'public' e la cartella 'images/cars'
-           $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
-           
+            $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
+
             $newCar->img = $img_path; // Salverà es. "images/cars/nomefilehashato.jpg"
         }
- 
+
         $newCar->save();
 
         return redirect()->route('cars.index');
@@ -77,17 +77,49 @@ class CarsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Car $car)
     {
-        //
+        $customers = Customer::all();
+        $brands = Brand::all();
+        $types = Type::all();
+
+        return view('cars.edit', compact('car', 'customers', 'brands', 'types'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    // 2. Salva le modifiche apportate
+    public function update(Request $request, Car $car)
     {
-        //
+        $data = $request->all();
+
+        // Assegnazione manuale delle proprietà dell'auto
+        $car->customer_id = $data['customer_id'];
+        $car->name = $data['name'];
+        $car->brand_id = $data['brand_id'];
+        $car->type_id = $data['type_id'];
+        $car->price = $data['price'];
+        $car->km = $data['km'];
+        $car->registration_date = $data['registration_date'];
+    
+
+        // Gestione aggiornamento dell'immagine se presente
+        if ($request->hasFile('image')) {
+            // Se c'era già un'immagine salvata in storage, la eliminiamo
+            if ($car->img && Storage::disk('public')->exists($car->img)) {
+                Storage::disk('public')->delete($car->img);
+            }
+
+            // Salviamo la nuova immagine e aggiorniamo la proprietà
+            $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
+            $car->img = $img_path;
+        }
+
+        // Salva le modifiche sul database
+        $car->save();
+
+        return redirect()->route('cars.index')->with('success', 'Auto aggiornata con successo!');
     }
 
     /**

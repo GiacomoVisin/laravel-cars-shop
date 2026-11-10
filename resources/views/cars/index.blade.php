@@ -21,7 +21,7 @@
     </style>
 
   
-    <h1 class="text-center my-4">BOOLEAN MOTORS G.B.M.</h1>
+    <h1 class="text-center mb-4" style="background-color: #4a4e51; color: white;">BOOLEAN MOTORS G.B.M.</h1>
 
     <div class="container my-4">
       
