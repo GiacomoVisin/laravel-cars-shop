@@ -106,6 +106,7 @@ class CarsController extends Controller
 
         // Gestione aggiornamento dell'immagine se presente
         if ($request->hasFile('image')) {
+            
             // Se c'era già un'immagine salvata in storage, la eliminiamo
             if ($car->img && Storage::disk('public')->exists($car->img)) {
                 Storage::disk('public')->delete($car->img);
