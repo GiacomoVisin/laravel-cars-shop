@@ -18,11 +18,18 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $types = Type::all();
-        $brands = Brand::all();
-        $cars = Car::all();
+        $cars = Car::with(['brand'])->get();
 
-        return view('cars.index', compact('cars', 'brands', 'types'));
+        return response()->json([
+            'success' => true,
+            'data' => $cars
+        ]);
+
+        /*    $types = Type::all();
+           $brands = Brand::all();
+           $cars = Car::all();
+
+           return view('cars.index', compact('cars', 'brands', 'types')); */
     }
 
     /**
@@ -43,42 +50,67 @@ class CarsController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        /*  $data = $request->all();
 
-        $newCar = new Car();
-        $newCar->name = $data['name'];
-        $newCar->brand_id = $data['brand_id'];
-        $newCar->type_id = $data['type_id'];
-        $newCar->price = $data['price'];
-        $newCar->km = $data['km'];
-        $newCar->registration_date = $data['registration_date'];
-        $newCar->description = $data['description'];
-        $newCar->customer_id = $data['customer_id'];
+         $newCar = new Car();
+         $newCar->name = $data['name'];
+         $newCar->brand_id = $data['brand_id'];
+         $newCar->type_id = $data['type_id'];
+         $newCar->price = $data['price'];
+         $newCar->km = $data['km'];
+         $newCar->registration_date = $data['registration_date'];
+         $newCar->description = $data['description'];
+         $newCar->customer_id = $data['customer_id'];
 
-        // Gestione dell'immagine con Storage::putFile
-        if ($request->hasFile('image')) {
-            // Specifica il disco 'public' e la cartella 'images/cars'
-            $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
+         // Gestione dell'immagine con Storage::putFile
+         if ($request->hasFile('image')) {
+             // Specifica il disco 'public' e la cartella 'images/cars'
+             $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
 
-            $newCar->img = $img_path; // Salverà es. "images/cars/nomefilehashato.jpg"
-        }
+             $newCar->img = $img_path; // Salverà es. "images/cars/nomefilehashato.jpg"
+         }
 
-        $newCar->save();
+         $newCar->save();
 
-        return redirect()->route('cars.index');
+         return redirect()->route('cars.index'); */
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'km' => 'required|integer',
+            'price' => 'required|numeric',
+            'registration_date' => 'required|date',
+            'description' => 'nullable|string',
+            'img' => 'nullable|string',
+        ]);
+
+        $car = Car::create($validated);
+
+        return response()->json([
+            'message' => 'Auto creata con successo!',
+            'car' => $car
+        ], 201);
     }
-
     /**
      * Display the specified resource.
      */
     public function show(Car $car)
     {
         // Carica le relazioni (brand, type, customer) per averle pronte nella vista
-        $customers = Customer::all();
-        $brands = Brand::all();
-        $types = Type::all();
+        /*    $customers = Customer::all();
+           $brands = Brand::all();
+           $types = Type::all();
 
-        return view('cars.show', compact('car', 'customers', 'brands', 'types'));
+           return view('cars.show', compact('car', 'customers', 'brands', 'types')); */
+
+        // Cerca l'auto con le sue relazioni
+        $car = Car::with(['brand', 'type'])->find($car);
+
+        // Se non esiste, restituisci 404 personalizzato
+        // Carica le relazioni sull'oggetto $car già trovato da Laravel
+        $car->load(['brand', 'type']);
+
+        return response()->json([
+            'data' => $car
+        ], 200);
     }
     /**
      * Show the form for editing the specified resource.
