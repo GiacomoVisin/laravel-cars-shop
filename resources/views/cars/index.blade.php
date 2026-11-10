@@ -1,6 +1,6 @@
 @extends('layouts.carsLayout')
 
-@section('title', 'Cars')
+@section('title', 'BOOLEAN MOTORS G.B.M.')
 
 @section('content')
 
