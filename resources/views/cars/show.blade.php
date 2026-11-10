@@ -3,7 +3,7 @@
 @section('title', 'Dettaglio Auto: ' . $car->name)
 
 @section('content')
-    <div class="container my-5">
+    <div class="container my-5 d-flex flex-column min-vh-100">
 
         {{-- Pulsante Torna Indietro --}}
         <div class="mb-4">
@@ -13,10 +13,15 @@
             </a>
         </div>
 
+
+
         {{-- Card Dettaglio Principale --}}
         <div class="card border-0 shadow-lg text-white"
             style="background: linear-gradient(135deg, #5a6268, #343a40); border-radius: 16px; overflow: hidden;">
             <div class="row g-0">
+
+
+
 
                 {{-- Colonna Immagine --}}
                 <div class="col-md-6 d-flex align-items-center justify-content-center bg-dark p-3">
@@ -33,8 +38,6 @@
 
 
 
-
-
                 {{-- Colonna Informazioni --}}
                 <div class="col-md-6 p-4 p-md-5 d-flex flex-column justify-content-between">
                     <div>
@@ -42,18 +45,21 @@
                         <div class="d-flex justify-content-between align-items-start mb-3">
 
                             <div>
-                                <h1 class="fw-bold mb-4">{{ $car->name }}</h1>
+                                <h2 class="fw-bold mb-4  SHOWH2">{{ $car->name }}</h2>
                                 <span class="badge bg-secondary fs-6">
                                     {{ $car->brand ? $car->brand->name : 'Brand N/D' }}
                                 </span>
                             </div>
 
-                            <h2 class="text-white fw-bold mb-0 mt-3">
+                            <h2 class="text-white fw-bold mb-0 SHOWH2">
                                 price: € {{ number_format($car->price, 2, ',', '.') }}
                             </h2>
                         </div>
 
                         <hr class="border-secondary my-4">
+
+
+
 
                         {{-- Griglia Dettagli (Type, Km, Data, Cliente) --}}
                         <div class="row g-3 mb-4">
@@ -66,7 +72,7 @@
 
                             <div class="col-6">
                                 <small class="text-uppercase text-light opacity-75 d-block">Chilometraggio</small>
-                                <span class="fw-semibold fs-5">{{ number_format($car->km, 0, ',', '.') }} km</span>
+                                <span class="fw-semibold fs-5">{{$car->km}} km</span>
                             </div>
 
                             <div class="col-6">
@@ -86,6 +92,7 @@
 
                         <hr class="border-secondary my-4">
 
+
                         {{-- Descrizione --}}
                         <div class="mb-4">
                             <h5 class="fw-bold mb-2">Descrizione:</h5>
@@ -93,7 +100,11 @@
                                 {{ $car->description ? $car->description : 'Nessuna descrizione presente.' }}
                             </p>
                         </div>
+
+
                     </div>
+
+
                     {{-- Pulsanti Azione (Modifica / Elimina / Torna indietro) --}}
                     <div class="d-flex flex-wrap gap-2 pt-3">
                         <a href="{{ route('cars.edit', $car) }}" class="btn text-white fw-bold px-4 py-2 shadow-sm"
@@ -120,6 +131,8 @@
         </div>
     </div>
 
+
+
     {{-- Modal di Conferma Eliminazione --}}
     <div class="modal fade" id="deleteCarModal" tabindex="-1" aria-labelledby="deleteCarModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -145,6 +158,7 @@
                     <form action="{{ route('cars.destroy', $car) }}" method="POST">
                         @csrf
                         @method('DELETE')
+
                         <button type="submit" class="btn btn-danger fw-bold px-3" style="border-radius: 6px;">
                             Elimina Definitivamente
                         </button>
@@ -155,3 +169,4 @@
         </div>
     </div>
 @endsection
+
