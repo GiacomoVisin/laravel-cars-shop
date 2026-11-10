@@ -24,6 +24,7 @@ class CarsTableSeeder extends Seeder
             $newCar->km = $car['km'];
             $newCar->price = $car['price'];
             $newCar->registration_date = $car['registration_date'];
+            $newCar->description = $car['description'];
             $newCar->img = $car['image'];
 
             $newCar->save();
