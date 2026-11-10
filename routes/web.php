@@ -28,10 +28,10 @@ Route::middleware(['auth', 'verified'])
 
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
-
-        });
-        
         Route::resource('cars', CarsController::class);
 
-        
+    });
+
+
+
 require __DIR__ . '/auth.php';
