@@ -18,7 +18,7 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $cars = Car::with(['brand'])->get();
+        $cars = Car::with(['brand', 'type'])->get();
 
         return response()->json([
             'success' => true,
@@ -50,39 +50,40 @@ class CarsController extends Controller
 
     public function store(Request $request)
     {
-        /*  $data = $request->all();
-
-         $newCar = new Car();
-         $newCar->name = $data['name'];
-         $newCar->brand_id = $data['brand_id'];
-         $newCar->type_id = $data['type_id'];
-         $newCar->price = $data['price'];
-         $newCar->km = $data['km'];
-         $newCar->registration_date = $data['registration_date'];
-         $newCar->description = $data['description'];
-         $newCar->customer_id = $data['customer_id'];
-
-         // Gestione dell'immagine con Storage::putFile
-         if ($request->hasFile('image')) {
-             // Specifica il disco 'public' e la cartella 'images/cars'
-             $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
-
-             $newCar->img = $img_path; // Salverà es. "images/cars/nomefilehashato.jpg"
-         }
-
-         $newCar->save();
-
-         return redirect()->route('cars.index'); */
+        // 1. Validiamo tutti i campi necessari, inclusi brand_id e type_id
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'type_id' => 'required|exists:types,id',
+            'customer_id' => 'nullable|exists:customers,id',
             'km' => 'required|integer',
             'price' => 'required|numeric',
             'registration_date' => 'required|date',
             'description' => 'nullable|string',
-            'img' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validazione file immagine
         ]);
 
-        $car = Car::create($validated);
+        // 2. Creiamo l'istanza del modello
+        $car = new Car();
+        $car->name = $request->name;
+        $car->brand_id = $request->brand_id;
+        $car->type_id = $request->type_id;
+        $car->customer_id = $request->customer_id;
+        $car->price = $request->price;
+        $car->km = $request->km;
+        $car->registration_date = $request->registration_date;
+        $car->description = $request->description;
+
+        // 3. Gestione dell'immagine se viene inviata come file
+        if ($request->hasFile('image')) {
+            $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
+            $car->img = $img_path;
+        }
+
+        $car->save();
+
+        // 4. Ricarichiamo le relazioni prima di mandare la risposta JSON (così il frontend riceve subito il brand e il type completi)
+        $car->load(['brand', 'type']);
 
         return response()->json([
             'message' => 'Auto creata con successo!',
@@ -101,11 +102,7 @@ class CarsController extends Controller
 
            return view('cars.show', compact('car', 'customers', 'brands', 'types')); */
 
-        // Cerca l'auto con le sue relazioni
-        $car = Car::with(['brand', 'type'])->find($car);
 
-        // Se non esiste, restituisci 404 personalizzato
-        // Carica le relazioni sull'oggetto $car già trovato da Laravel
         $car->load(['brand', 'type']);
 
         return response()->json([
@@ -130,35 +127,37 @@ class CarsController extends Controller
     // 2. Salva le modifiche apportate
     public function update(Request $request, Car $car)
     {
-        $data = $request->all();
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'type_id' => 'required|exists:types,id',
+            'price' => 'required|numeric',
+            'km' => 'required|integer',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
 
-        // Assegnazione manuale delle proprietà dell'auto
-        $car->customer_id = $data['customer_id'];
-        $car->name = $data['name'];
-        $car->brand_id = $data['brand_id'];
-        $car->type_id = $data['type_id'];
-        $car->price = $data['price'];
-        $car->km = $data['km'];
-        $car->registration_date = $data['registration_date'];
+        $car->name = $request->name;
+        $car->brand_id = $request->brand_id;
+        $car->type_id = $request->type_id;
+        $car->price = $request->price;
+        $car->km = $request->km;
+        $car->description = $request->description;
 
-
-        // Gestione aggiornamento dell'immagine se presente
         if ($request->hasFile('image')) {
-
-            // Se c'era già un'immagine salvata in storage, la eliminiamo
+            // Eliminiamo la vecchia foto da storage se presente
             if ($car->img && Storage::disk('public')->exists($car->img)) {
                 Storage::disk('public')->delete($car->img);
             }
-
-            // Salviamo la nuova immagine e aggiorniamo la proprietà
-            $img_path = Storage::disk('public')->putFile('cars', $request->file('image'));
-            $car->img = $img_path;
+            $car->img = Storage::disk('public')->putFile('cars', $request->file('image'));
         }
 
-        // Salva le modifiche sul database
         $car->save();
 
-        return redirect()->route('cars.index')->with('success', 'Auto aggiornata con successo!');
+        return response()->json([
+            'message' => 'Auto aggiornata con successo!',
+            'car' => $car
+        ], 200);
     }
 
     /**
