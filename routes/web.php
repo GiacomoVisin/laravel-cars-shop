@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
+// rotte per admin che comprendono la parte di cars, sotto autenticazione //
 
 Route::middleware(['auth', 'verified'])
     ->name('admin.')
