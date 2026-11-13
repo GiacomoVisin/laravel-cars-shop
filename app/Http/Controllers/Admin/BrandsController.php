@@ -13,8 +13,8 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        Brand::all();
-        return 'index di Brands';
+       $brands = Brand::all();
+        return view('brands.index',compact('brands'));
     }   
 
     /**
