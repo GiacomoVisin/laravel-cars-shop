@@ -1,6 +1,6 @@
 @extends('layouts.carsLayout')
 
-@section('title', 'Pagina per la creazione di nuove categorie')
+@section('title', 'Pagina per le categorie')
 
 @section('content')
     <h1> Benvenuto nelle categorie</h1>
