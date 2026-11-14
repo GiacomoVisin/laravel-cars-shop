@@ -52,17 +52,22 @@ class BrandsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Brand $brand)
     {
-        //
+        
+      return view('brands.edit',compact('brand'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Brand $brand)
     {
-        //
+        $brand->name = $request->name;
+        $brand->description = $request->description;
+
+        $brand->update();
+        return redirect()->route('brands.index',$brand);
     }
 
     /**
