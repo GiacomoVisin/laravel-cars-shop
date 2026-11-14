@@ -36,9 +36,9 @@ class BrandsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Brand $brand)
     {
-        //
+        return view('brands.show',compact('brand'));
     }
 
     /**
