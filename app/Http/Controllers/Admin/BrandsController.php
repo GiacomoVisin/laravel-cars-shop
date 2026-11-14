@@ -13,16 +13,18 @@ class BrandsController extends Controller
      */
     public function index()
     {
-       $brands = Brand::all();
-        return view('brands.index',compact('brands'));
-    }   
+        $brands = Brand::all();
+        return view('brands.index', compact('brands'));
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $Brands = Brand::all();
+
+        return view('brands.create', compact('Brands'));
     }
 
     /**
@@ -30,7 +32,13 @@ class BrandsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $NewBrand = new Brand;
+        $NewBrand->name = $request->name;
+        $NewBrand->description = $request->description;
+
+        $NewBrand->save();
+
+        return redirect()->route('brands.index',$NewBrand);
     }
 
     /**
@@ -38,7 +46,7 @@ class BrandsController extends Controller
      */
     public function show(Brand $brand)
     {
-        return view('brands.show',compact('brand'));
+        return view('brands.show', compact('brand'));
     }
 
     /**
